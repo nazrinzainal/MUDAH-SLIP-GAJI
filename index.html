@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MUDAH SLIP GAJI</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',Arial,sans-serif;background:#C8C8C8;min-height:100vh;font-size:13px}
+
+.app{display:grid;grid-template-columns:370px 1fr;min-height:100vh}
+
+.sb{background:#1C2333;color:#D0D5E8;overflow-y:auto;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.sb-head{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;display:flex;align-items:center;gap:10px}
+.sb-icon{width:32px;height:32px;background:#1A56DB;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.sb-title{font-size:15px;font-weight:800;color:#fff;letter-spacing:.04em;text-transform:uppercase}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+.sb-body{flex:1;overflow-y:auto;padding:14px 16px}
+.sb-body::-webkit-scrollbar{width:3px}
+.sb-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1)}
+.sec{margin-bottom:18px}
+.sec-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.05)}
+.f{margin-bottom:7px}
+.f label{display:block;font-size:10px;color:rgba(255,255,255,.45);margin-bottom:3px}
+.f input,.f select,.f textarea{
+  width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);
+  border-radius:5px;color:#fff;font-size:12px;padding:5px 8px;height:28px;
+  font-family:'Inter',sans-serif;outline:none;transition:border-color .15s
+}
+.f input:focus,.f select:focus{border-color:#1A56DB;background:rgba(26,86,219,.1)}
+.f textarea{height:44px;resize:none;padding-top:5px}
+.f select option{background:#1C2333}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+
+.epf-box{background:rgba(26,86,219,.12);border:1px solid rgba(26,86,219,.25);border-radius:6px;padding:9px;display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px}
+.epf-box label{color:rgba(96,165,250,.8)}
+
+.dyn-list{display:flex;flex-direction:column;gap:4px;margin-bottom:5px}
+.dyn-row{display:grid;grid-template-columns:1fr 88px 24px;gap:4px;align-items:center}
+.dyn-row input{height:26px;font-size:11px}
+.btn-rm{width:24px;height:26px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.2);border-radius:4px;color:rgba(239,68,68,.6);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.btn-rm:hover{background:rgba(239,68,68,.2)}
+.btn-add{width:100%;padding:5px;font-size:11px;background:transparent;border:1px dashed rgba(255,255,255,.12);border-radius:4px;color:rgba(255,255,255,.35);cursor:pointer;transition:all .15s;font-family:inherit}
+.btn-add:hover{border-color:rgba(26,86,219,.5);color:rgba(96,165,250,.7);background:rgba(26,86,219,.08)}
+.hint{font-size:9px;color:rgba(255,255,255,.25);margin-top:2px;line-height:1.5}
+
+.sb-foot{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;display:flex;flex-direction:column;gap:7px}
+.btn-example{
+  width:100%;height:32px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);
+  border:1px solid rgba(255,255,255,.1);border-radius:5px;font-family:inherit;
+  font-size:12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px
+}
+.btn-example:hover{background:rgba(255,255,255,.1);color:#fff}
+.btn-reset{
+  width:100%;height:32px;background:rgba(239,68,68,.1);color:rgba(239,68,68,.7);
+  border:1px solid rgba(239,68,68,.2);border-radius:5px;font-family:inherit;
+  font-size:12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px
+}
+.btn-reset:hover{background:rgba(239,68,68,.2);color:#f87171;border-color:rgba(239,68,68,.35)}
+
+.toggle-wrap{cursor:pointer}
+.toggle-track{
+  width:34px;height:18px;background:rgba(255,255,255,.12);border-radius:9px;
+  position:relative;transition:background .2s;border:1px solid rgba(255,255,255,.15)
+}
+.toggle-track.on{background:#1A56DB;border-color:#1A56DB}
+.toggle-thumb{
+  width:14px;height:14px;background:#fff;border-radius:7px;
+  position:absolute;top:1px;left:1px;transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.3)
+}
+.toggle-track.on .toggle-thumb{transform:translateX(16px)}
+.btn-gen{
+  width:100%;height:38px;background:#1A56DB;color:#fff;border:none;border-radius:6px;
+  font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:all .15s
+}
+.btn-gen:hover{background:#1744B5;transform:translateY(-1px)}
+
+.pv{padding:24px 28px;display:flex;flex-direction:column;align-items:center}
+.pv-bar{width:100%;max-width:780px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.pv-label{font-size:12px;color:#666}
+.btn-print{height:30px;padding:0 12px;background:#1C2333;color:#fff;border:none;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;display:none;align-items:center;gap:5px}
+.btn-print:hover{background:#0D47A1}
+
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#999;gap:10px;padding:60px 0;text-align:center;font-size:13px}
+.empty svg{opacity:.25}
+
+#slip{
+  width:100%;max-width:780px;
+  background:#fff;
+  display:none;
+  font-family:'Courier Prime','Courier New',monospace;
+  font-size:11.5px;
+  color:#000;
+  border:1.5px solid #000;
+}
+
+.sl-logo-row{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 8px}
+.sl-logo-left{display:flex;align-items:center;gap:10px}
+.co-name-block{text-align:left}
+.co-name-main{font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:700;color:#000;letter-spacing:.02em;text-transform:uppercase}
+.co-name-reg{font-family:'Inter',Arial,sans-serif;font-size:9px;color:#000;margin-top:1px}
+.co-name-addr{font-family:'Inter',Arial,sans-serif;font-size:9px;color:#000}
+
+.sl-logo-right{text-align:right}
+.co-logo-text{font-family:'Inter',Arial,sans-serif;font-size:22px;font-weight:800;color:#000;letter-spacing:-.03em}
+.co-logo-sub{font-family:'Inter',Arial,sans-serif;font-size:8px;color:#000;text-transform:uppercase;letter-spacing:.08em}
+
+.sl-title-bar{text-align:center;padding:4px 0 8px;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#000}
+
+.sl-wave{height:18px;background:#000;position:relative;overflow:hidden}
+.sl-wave::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(255,255,255,.25) 3px,rgba(255,255,255,.25) 4px)}
+.sl-wave-label{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;height:100%;padding:0 14px;font-size:10px;font-weight:700;color:#fff;letter-spacing:.06em}
+
+.sl-info{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:0;padding:4px 14px;border-bottom:1px solid #000;font-size:10.5px}
+.sl-info-label{font-weight:700;padding:2px 6px 2px 0;white-space:nowrap;color:#000}
+.sl-info-val{padding:2px 12px 2px 0;color:#000;border-bottom:1px dotted #000;min-width:120px}
+.sl-divider{height:1.5px;background:#000;margin:0}
+
+.sl-table-wrap{position:relative;width:100%;border-bottom:1.5px solid #000}
+.sl-vline-1{position:absolute;top:0;bottom:0;width:1.5px;background:#000;left:38%}
+.sl-vline-2{position:absolute;top:0;bottom:0;width:2px;background:#000;left:50%}
+.sl-vline-3{position:absolute;top:0;bottom:0;width:1.5px;background:#000;left:88%}
+
+.sl-main-table{width:100%;border-collapse:collapse;table-layout:fixed;position:relative;z-index:1}
+.sl-main-table thead tr{border-bottom:1.5px solid #000}
+.sl-main-table .th-earn{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;width:38%;background:transparent;color:#000}
+.sl-main-table .th-earn-amt{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;text-align:right;width:12%;white-space:nowrap;background:transparent;color:#000}
+.sl-main-table .th-ded{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;width:38%;background:transparent;color:#000}
+.sl-main-table .th-ded-amt{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;text-align:right;width:12%;white-space:nowrap;background:transparent;color:#000}
+
+.sl-main-table .td-earn{padding:3px 10px;font-size:11px;vertical-align:top}
+.sl-main-table .td-earn-amt{padding:3px 10px;text-align:right;font-size:11px;vertical-align:top;white-space:nowrap}
+.sl-main-table .td-ded{padding:3px 10px;font-size:11px;vertical-align:top}
+.sl-main-table .td-ded-amt{padding:3px 10px;text-align:right;font-size:11px;vertical-align:top;white-space:nowrap}
+
+.sl-foot-wave{height:16px;background:#000;position:relative;overflow:hidden}
+.sl-foot-wave::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent 0,transparent 3px,rgba(255,255,255,.25) 3px,rgba(255,255,255,.25) 4px)}
+
+.sl-summary-table{width:100%;border-collapse:collapse;border-bottom:1.5px solid #000}
+.sl-summary-table td{padding:5px 10px;font-size:11px;font-weight:700;color:#000;vertical-align:middle}
+.sl-summary-table .sum-earn-label{width:30%;border-right:1px solid #000}
+.sl-summary-table .sum-earn-val{width:20%;text-align:right;border-right:2px solid #000;font-family:'Courier New',monospace}
+.sl-summary-table .sum-ded-label{width:25%;text-align:right;border-right:1px solid #000}
+.sl-summary-table .sum-ded-val{width:15%;text-align:right;border-right:2px solid #000;font-family:'Courier New',monospace}
+.sl-summary-table .sum-net-label{width:5%;text-align:center}
+.sl-net-row td{border-top:1.5px solid #000;padding:5px 10px;background:#fff}
+.sl-net-row .net-label-cell{font-size:12px;font-weight:700;text-align:center;border-right:2px solid #000}
+.sl-net-row .net-val-cell{font-size:14px;font-weight:700;text-align:left;font-family:'Courier New',monospace;letter-spacing:.02em}
+
+.sl-bank-row{display:flex;justify-content:space-between;align-items:center;padding:5px 14px;font-size:10.5px;border-bottom:1px solid #000;background:#fff;color:#000}
+.sl-notice{display:grid;grid-template-columns:1fr 1fr;padding:4px 14px;font-size:9px;font-weight:700;letter-spacing:.03em;border-bottom:1px solid #000;font-family:'Inter',Arial,sans-serif;background:#fff;color:#000}
+.sl-notice div:last-child{text-align:right}
+.sl-confidential{text-align:center;padding:3px;font-size:9px;font-weight:700;letter-spacing:.15em;font-family:'Inter',Arial,sans-serif;color:#000;background:#fff;border-top:1px solid #000}
+.sl-serial{text-align:right;padding:3px 14px;font-size:9px;color:#666;font-family:'Inter',Arial,sans-serif}
+
+@media (min-width:1400px){.app{grid-template-columns:420px 1fr}#slip{max-width:860px}}
+@media (max-width:1399px) and (min-width:1024px){.app{grid-template-columns:360px 1fr}.pv{padding:20px 20px}}
+@media (max-width:1023px) and (min-width:768px){
+  .app{display:flex;flex-direction:column}
+  .sb{position:static;height:auto;overflow:visible}
+  .sb-body{overflow:visible;display:grid;grid-template-columns:1fr 1fr;gap:0 24px;padding:14px 20px}
+  .sec{margin-bottom:14px}
+  .sb-foot{position:static}
+  .pv{padding:16px 20px;overflow-x:auto}
+  #slip{min-width:700px;font-size:11px}
+}
+@media (max-width:767px) and (min-width:480px){
+  .app{display:flex;flex-direction:column}
+  .sb{position:static;height:auto;overflow:visible}
+  .sb-body{overflow:visible;padding:12px 14px}
+  .sb-foot{position:static}
+  .r2{grid-template-columns:1fr 1fr;gap:6px}
+  .f input,.f select,.f textarea{height:34px;font-size:13px}
+  .f label{font-size:11px}
+  .pv{padding:12px 10px}
+  .slip-scroll-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  #slip{min-width:680px;font-size:11.5px}
+}
+@media (max-width:479px){
+  body{font-size:13px}
+  .app{display:flex;flex-direction:column}
+  .sb{position:fixed!important;top:0;left:0;bottom:0;width:88%;max-width:340px;z-index:100;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);height:100%!important;overflow-y:auto!important}
+  .sb.sb-open{transform:translateX(0)}
+  .sb-overlay.active{display:block}
+  .sb-head{padding:14px 14px 11px}
+  .sb-title{font-size:13px}
+  .sb-sub{font-size:10px}
+  .sb-body{overflow-y:auto;padding:12px 14px}
+  .sb-foot{padding:12px 14px;gap:7px}
+  .r2{grid-template-columns:1fr}
+  .f{margin-bottom:8px}
+  .f label{font-size:12px}
+  .f input,.f select{height:40px;font-size:14px;padding:6px 10px}
+  .f textarea{height:56px;font-size:14px;padding:6px 10px}
+  .sec-lbl{font-size:10px;margin-bottom:8px}
+  .sec{margin-bottom:16px}
+  .epf-box{grid-template-columns:1fr}
+  .dyn-row{grid-template-columns:1fr 100px 32px}
+  .dyn-row input{height:36px;font-size:13px}
+  .btn-rm{width:32px;height:36px;font-size:16px}
+  .btn-add{padding:8px;font-size:13px}
+  .btn-gen{height:46px;font-size:15px}
+  .btn-example,.btn-reset{height:38px;font-size:13px}
+  .pv{padding:10px 6px}
+  .pv-bar{flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .pv-label{font-size:12px}
+  .btn-print{width:100%;height:36px;justify-content:center;font-size:13px;display:flex!important}
+  .slip-scroll-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #ccc;border-radius:4px}
+  #slip{min-width:680px;font-size:11.5px;display:block}
+}
+
+.sb-toggle-close{display:none;margin-left:auto;background:none;border:none;color:rgba(255,255,255,.55);font-size:18px;cursor:pointer;padding:4px 6px;line-height:1;flex-shrink:0}
+.mob-fab{display:none;position:fixed;bottom:20px;right:20px;z-index:999;width:52px;height:52px;border-radius:26px;background:#1C2333;color:#fff;border:none;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);align-items:center;justify-content:center}
+.mob-fab-gen{display:none;position:fixed;bottom:82px;right:20px;z-index:999;height:42px;padding:0 18px;border-radius:21px;background:#1A56DB;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);align-items:center;gap:6px;font-family:inherit;white-space:nowrap}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99}
+@media (max-width:479px){.mob-fab{display:flex}.mob-fab-gen{display:flex}.sb-toggle-close{display:block}}
+
+@media print{
+  .sb,.pv-bar,.mob-fab,.mob-fab-gen,.sb-overlay{display:none!important}
+  .app{display:block}
+  .pv{padding:0;overflow:visible}
+  .slip-scroll-wrap{overflow:visible!important;border:none!important}
+  body{background:#fff}
+  #slip{display:block!important;min-width:0!important;max-width:100%!important;font-size:11px;border:1.5px solid #000;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact}
+  .sl-wave,.sl-foot-wave{background:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sl-wave-label{color:#fff!important}
+  .sl-vline-1,.sl-vline-2,.sl-vline-3{background:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sl-main-table,.sl-summary-table{border-collapse:collapse!important}
+  .sl-summary-table td{border-color:#000!important}
+  .sl-logo-row{flex-direction:row!important;align-items:center!important}
+  .sl-bank-row{flex-direction:row!important}
+  .empty{display:none!important}
+  @page{size:A4 landscape;margin:8mm 10mm}
+}
+
+.free-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);color:#4ade80;font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:10px;text-transform:uppercase;margin-left:8px}
+.pro-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(250,204,21,.15);border:1px solid rgba(250,204,21,.3);color:#facc15;font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:10px;text-transform:uppercase;margin-left:8px}
+
+.usage-bar{background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.06);padding:10px 16px;flex-shrink:0}
+.usage-label{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:5px;display:flex;justify-content:space-between}
+.usage-label span{color:rgba(255,255,255,.7);font-weight:600}
+.usage-track{height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.usage-fill{height:100%;background:#4ade80;border-radius:2px;transition:width .4s}
+.usage-fill.used{background:#ef4444}
+
+.modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
+.modal-overlay.show{display:flex}
+
+.auth-modal{background:#1C2333;border:1px solid rgba(255,255,255,.1);border-radius:14px;width:100%;max-width:380px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.auth-modal-head{padding:24px 24px 0;text-align:center}
+.auth-modal-icon{width:52px;height:52px;margin:0 auto 12px;background:rgba(26,86,219,.2);border:1px solid rgba(26,86,219,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.auth-modal-title{font-size:17px;font-weight:700;color:#fff;margin-bottom:4px}
+.auth-modal-sub{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5}
+.auth-modal-body{padding:20px 24px 24px}
+.auth-field{margin-bottom:10px}
+.auth-field label{display:block;font-size:11px;color:rgba(255,255,255,.45);margin-bottom:4px}
+.auth-field input{width:100%;height:38px;padding:0 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#fff;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s}
+.auth-field input:focus{border-color:#1A56DB;background:rgba(26,86,219,.1)}
+.auth-btn-primary{width:100%;height:40px;background:#1A56DB;color:#fff;border:none;border-radius:7px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px;transition:background .15s}
+.auth-btn-primary:hover{background:#1744B5}
+.auth-btn-primary:disabled{background:rgba(26,86,219,.4);cursor:not-allowed}
+.auth-switch{text-align:center;margin-top:12px;font-size:11px;color:rgba(255,255,255,.35)}
+.auth-switch a{color:#60a5fa;cursor:pointer;text-decoration:none}
+.auth-switch a:hover{text-decoration:underline}
+.auth-msg{font-size:11px;text-align:center;margin-top:8px;min-height:16px}
+.auth-msg.err{color:#f87171}
+.auth-msg.ok{color:#4ade80}
+.auth-divider{border:none;border-top:1px solid rgba(255,255,255,.07);margin:14px 0}
+
+.pay-modal{background:#1C2333;border:1px solid rgba(255,255,255,.1);border-radius:14px;width:100%;max-width:400px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.pay-modal-head{background:linear-gradient(135deg,#0f172a,#1e293b);padding:28px 24px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.07)}
+.pay-modal-icon{font-size:36px;margin-bottom:8px}
+.pay-modal-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.01em}
+.pay-modal-sub{font-size:12px;color:rgba(255,255,255,.45);margin-top:4px}
+.pay-modal-body{padding:20px 24px}
+.pay-price-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px;text-align:center;margin-bottom:16px}
+.pay-price{font-size:32px;font-weight:800;color:#fff;letter-spacing:-.02em}
+.pay-price sup{font-size:16px;font-weight:600;vertical-align:super}
+.pay-price-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.pay-features{list-style:none;margin-bottom:16px}
+.pay-features li{font-size:12px;color:rgba(255,255,255,.65);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:8px}
+.pay-features li::before{content:'✓';color:#4ade80;font-weight:700;font-size:13px}
+.pay-features li:last-child{border-bottom:none}
+.pay-btn{width:100%;height:44px;background:#facc15;color:#0f172a;border:none;border-radius:8px;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;letter-spacing:.01em}
+.pay-btn:hover{background:#fde047;transform:translateY(-1px)}
+.pay-dismiss{width:100%;background:none;border:none;color:rgba(255,255,255,.3);font-size:11px;cursor:pointer;margin-top:10px;font-family:inherit;padding:4px;transition:color .15s}
+.pay-dismiss:hover{color:rgba(255,255,255,.6)}
+
+.pro-banner{display:none;background:linear-gradient(90deg,rgba(74,222,128,.1),rgba(74,222,128,.05));border:1px solid rgba(74,222,128,.2);border-radius:8px;padding:10px 14px;margin:0 16px 12px;font-size:11px;color:#4ade80;text-align:center;font-weight:500}
+
+.btn-logout{width:100%;height:28px;background:transparent;border:1px solid rgba(255,255,255,.08);border-radius:5px;color:rgba(255,255,255,.3);font-size:11px;cursor:pointer;font-family:inherit;transition:all .15s;margin-top:4px}
+.btn-logout:hover{border-color:rgba(239,68,68,.3);color:rgba(239,68,68,.6)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sb" id="sidebar">
+  <div class="sb-head">
+    <div class="sb-icon" style="background:#0a0a0a;border-radius:0;clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);width:36px;height:36px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="22" height="22">
+  <polygon points="32,2 58,17 58,47 32,62 6,47 6,17" fill="none" stroke="#fff" stroke-width="2.5"/>
+  <polygon points="32,9 52,20.5 52,43.5 32,55 12,43.5 12,20.5" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <polygon points="32,8 44,15 38,15 32,20 26,15 20,15" fill="#fff"/>
+  <polygon points="32,56 44,49 38,49 32,44 26,49 20,49" fill="#fff"/>
+  <polygon points="8,32 16,26 16,38" fill="#fff"/>
+  <polygon points="56,32 48,26 48,38" fill="#fff"/>
+  <rect x="22" y="26" width="20" height="12" rx="1" fill="#fff"/>
+  <rect x="24" y="28" width="7" height="4" rx="0.5" fill="#1C2333"/>
+  <rect x="33" y="28" width="7" height="4" rx="0.5" fill="#1C2333"/>
+  <rect x="30.5" y="28" width="3" height="8" rx="0.5" fill="#1C2333"/>
+  <rect x="26" y="34" width="12" height="2" rx="0.5" fill="#1C2333"/>
+</svg></div>
+    <div>
+      <div class="sb-title">MUDAH SLIP GAJI <span class="free-badge" id="plan-badge">✦ FREE</span></div>
+      <div class="sb-sub">Penjana Slip Gaji Profesional</div>
+    </div>
+    <button class="sb-toggle-close" id="sb-close" onclick="document.getElementById('sidebar').classList.remove('sb-open')" title="Tutup">✕</button>
+  </div>
+
+  <div class="sb-body">
+
+    <div class="sec">
+      <div class="sec-lbl">Maklumat Syarikat / Majikan</div>
+      <div class="f"><label>Nama Syarikat</label>
+        <input id="f-coname" type="text" placeholder="ABC SDN BHD" oninput="gen()"></div>
+      <div class="f"><label>No. SSM / Pendaftaran</label>
+        <input id="f-cossm" type="text" placeholder="202301012345 (1234567-X)" oninput="gen()"></div>
+      <div class="f"><label>Alamat Syarikat</label>
+        <textarea id="f-coaddr" placeholder="No. 1, Jalan Utama, 50000 Kuala Lumpur" oninput="gen()"></textarea></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-lbl">Maklumat Pekerja</div>
+      <div class="f"><label>Nama Penuh</label>
+        <input id="f-name" type="text" placeholder="Nama penuh pekerja" oninput="gen()"></div>
+      <div class="r2">
+        <div class="f"><label>No. Gaji / Pekerja</label>
+          <input id="f-nogaji" type="text" placeholder="P0001" oninput="gen()"></div>
+        <div class="f"><label>No. K/P (MyKad)</label>
+          <input id="f-ic" type="text" placeholder="XXXX" oninput="gen()"></div>
+      </div>
+      <div class="r2">
+        <div class="f"><label>Jabatan</label>
+          <input id="f-jabatan" type="text" placeholder="Jabatan / Bahagian" oninput="gen()"></div>
+        <div class="f"><label>Pusat Pembayar</label>
+          <input id="f-pusat" type="text" placeholder="HQ / Cawangan" oninput="gen()"></div>
+      </div>
+      <div class="r2">
+        <div class="f"><label>Bulan Gaji</label>
+          <input id="f-month" type="month" oninput="gen()"></div>
+        <div class="f"><label>No. KWSP</label>
+          <input id="f-epfno" type="text" placeholder="12345678" oninput="gen()"></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-lbl">Maklumat Bank</div>
+      <div class="f">
+        <label>Bank</label>
+        <select id="f-bank" onchange="gen()">
+          <option value="">— Pilih Bank —</option>
+          <optgroup label="Bank Perdagangan Tempatan">
+            <option value="MBBEMYKL">Maybank (MBBEMYKL)</option>
+            <option value="CIMBMYKL">CIMB Bank (CIMBMYKL)</option>
+            <option value="HLBBMYKL">Hong Leong Bank (HLBBMYKL)</option>
+            <option value="RHBBMYKL">RHB Bank (RHBBMYKL)</option>
+            <option value="AFBQMYKL">Affin Bank (AFBQMYKL)</option>
+            <option value="AMMBMYKL">AmBank (AMMBMYKL)</option>
+            <option value="BIMBMYKL">Bank Islam (BIMBMYKL)</option>
+            <option value="BKRMMYKL">Bank Kerjasama Rakyat (BKRMMYKL)</option>
+            <option value="BMMBMYKL">Bank Muamalat (BMMBMYKL)</option>
+            <option value="BSNAMYK1">BSN — Bank Simpanan Nasional (BSNAMYK1)</option>
+            <option value="OCBCMYKL">OCBC Bank (OCBCMYKL)</option>
+            <option value="PBBEMYKL">Public Bank (PBBEMYKL)</option>
+            <option value="UOVBMYKL">UOB Bank (UOVBMYKL)</option>
+            <option value="AGOBMYKL">Agrobank (AGOBMYKL)</option>
+            <option value="BNPPMYKL">Bank Pembangunan Malaysia (BNPPMYKL)</option>
+            <option value="EXABMYKL">Exim Bank (EXABMYKL)</option>
+            <option value="ALSRMYK1">Al-Rajhi Bank Malaysia (ALSRMYK1)</option>
+            <option value="AISLMYKL">AEON Credit (AISLMYKL)</option>
+          </optgroup>
+          <optgroup label="Bank Antarabangsa (Beroperasi di Malaysia)">
+            <option value="HBMBMYKL">HSBC Bank Malaysia (HBMBMYKL)</option>
+            <option value="SCBLMYKX">Standard Chartered Bank (SCBLMYKX)</option>
+            <option value="CITIMYKL">Citibank Malaysia (CITIMYKL)</option>
+            <option value="DEUTMYKL">Deutsche Bank Malaysia (DEUTMYKL)</option>
+            <option value="BNPAMYKL">BNP Paribas Malaysia (BNPAMYKL)</option>
+            <option value="MFBBMYKL">MBSB Bank (MFBBMYKL)</option>
+            <option value="KFHOMYKL">Kuwait Finance House (KFHOMYKL)</option>
+          </optgroup>
+          <optgroup label="Bank Digital">
+            <option value="GXBank">GX Bank</option>
+            <option value="Boost Bank">Boost Bank</option>
+            <option value="RIZE">RIZE (by Standard Chartered)</option>
+          </optgroup>
+        </select>
+        <div class="hint" id="bank-swift-hint" style="margin-top:4px;display:none">
+          Kod SWIFT: <strong id="bank-swift-code" style="color:rgba(96,165,250,.9)"></strong>
+          &nbsp;|&nbsp; Nama penuh: <span id="bank-full-name" style="color:rgba(255,255,255,.6)"></span>
+        </div>
+      </div>
+      <div class="f"><label>No. Akaun Bank</label>
+        <input id="f-bankno" type="text" placeholder="cth: 1234-5678-9012" oninput="gen()"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-lbl">Gaji &amp; Pendapatan</div>
+
+      <div class="f">
+        <label style="color:#4ade80;font-weight:600;font-size:11px">💰 Gaji Bersih Masuk Bank (RM)</label>
+        <input id="f-net" type="number" step="0.01" placeholder="cth: 2,649.35"
+          style="border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.06);font-size:13px;font-weight:600;height:34px"
+          oninput="reverseCalc()">
+        <div class="hint">Masukkan jumlah yang masuk dalam akaun bank — sistem akan kira semua potongan secara automatik</div>
+      </div>
+
+      <div id="calc-result-box" style="display:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:9px;margin-bottom:8px">
+        <div style="font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:6px">Hasil Pengiraan Balik</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px">
+          <div style="color:rgba(255,255,255,.45)">Gaji Kasar</div><div id="r-gross" style="color:#fff;text-align:right;font-weight:600">—</div>
+          <div style="color:rgba(255,255,255,.45)">EPF Pekerja</div><div id="r-epf-ee" style="color:#93C5FD;text-align:right">—</div>
+          <div style="color:rgba(255,255,255,.45)">EPF Majikan</div><div id="r-epf-er" style="color:#93C5FD;text-align:right">—</div>
+          <div style="color:rgba(255,255,255,.45)">SOCSO</div><div id="r-socso" style="color:#93C5FD;text-align:right">—</div>
+          <div style="color:rgba(255,255,255,.45)">EIS</div><div id="r-eis" style="color:#93C5FD;text-align:right">—</div>
+          <div style="color:rgba(255,255,255,.45)">PCB</div><div id="r-pcb" style="color:#93C5FD;text-align:right">—</div>
+          <div style="color:rgba(74,222,128,.8);font-weight:600;border-top:1px solid rgba(255,255,255,.08);padding-top:4px;margin-top:2px">Gaji Bersih</div>
+          <div id="r-net" style="color:#4ade80;text-align:right;font-weight:700;border-top:1px solid rgba(255,255,255,.08);padding-top:4px;margin-top:2px">—</div>
+        </div>
+      </div>
+
+      <div style="background:rgba(26,86,219,.1);border:1px solid rgba(26,86,219,.2);border-radius:6px;padding:9px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:10px;font-weight:700;color:rgba(96,165,250,.9);letter-spacing:.05em;text-transform:uppercase">Caruman KWSP / EPF</span>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;margin:0">
+            <span style="font-size:9px;color:rgba(255,255,255,.4)" id="epf-mode-label">Auto</span>
+            <div class="toggle-wrap" onclick="toggleEPF()">
+              <div class="toggle-track" id="epf-toggle-track">
+                <div class="toggle-thumb" id="epf-toggle-thumb"></div>
+              </div>
+            </div>
+            <span style="font-size:9px;color:rgba(255,255,255,.4)">Manual</span>
+          </label>
+        </div>
+        <div id="epf-auto-display" style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <div style="font-size:11px">
+            <div style="color:rgba(255,255,255,.35);font-size:9px;margin-bottom:2px">Pekerja (dikira)</div>
+            <div id="epf-auto-ee" style="color:#93C5FD;font-weight:600">RM —</div>
+          </div>
+          <div style="font-size:11px">
+            <div style="color:rgba(255,255,255,.35);font-size:9px;margin-bottom:2px">Majikan (dikira)</div>
+            <div id="epf-auto-er" style="color:#93C5FD;font-weight:600">RM —</div>
+          </div>
+        </div>
+        <div id="epf-manual-inputs" style="display:none;grid-template-columns:1fr 1fr;gap:6px">
+          <div class="f" style="margin:0"><label>EPF Pekerja (RM)</label>
+            <input id="f-epf-ee" type="number" step="0.01" placeholder="0.00" oninput="reverseCalc()"></div>
+          <div class="f" style="margin:0"><label>EPF Majikan (RM)</label>
+            <input id="f-epf-er" type="number" step="0.01" placeholder="0.00" oninput="reverseCalc()"></div>
+        </div>
+        <div class="hint" style="margin-top:6px">Auto = dikira dari jadual EPF Third Schedule. Manual = letak nilai sebenar dari slip bank.</div>
+      </div>
+
+      <div class="f">
+        <label>Elaun / Imbuhan Tambahan</label>
+        <div class="dyn-list" id="elaun-list"></div>
+        <button class="btn-add" onclick="addElaun()">+ Tambah Elaun / Imbuhan</button>
+        <div class="hint">Elaun akan ditambah ke pendapatan kasar sebelum kira potongan</div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-lbl">Potongan Tambahan</div>
+      <div class="f"><label>Pendahuluan Gaji (RM)</label>
+        <input id="f-adv" type="number" step="0.01" placeholder="0.00" value="0" oninput="reverseCalc()"></div>
+      <div class="f">
+        <label>Potongan Lain</label>
+        <div class="dyn-list" id="deduct-list"></div>
+        <button class="btn-add" onclick="addDeduct()">+ Tambah Potongan</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pro-banner" id="pro-banner">⚡ Akaun PRO aktif — slip gaji tanpa had!</div>
+
+  <div class="usage-bar">
+    <div class="usage-label">
+      <span>Penggunaan slip</span>
+      <span id="usage-count">0/1 slip percuma</span>
+    </div>
+    <div class="usage-track"><div class="usage-fill" id="usage-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="sb-foot">
+    <button class="btn-example" id="btn-auth" onclick="currentUser?null:showAuthModal()"
+      style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1)">
+      🔐 Log Masuk / Daftar
+    </button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+      <button class="btn-example" onclick="loadExample()">📋 Cuba Contoh</button>
+      <button class="btn-reset" onclick="resetForm()">↺ Reset</button>
+    </div>
+    <button class="btn-gen" onclick="generateSlip()">▶ JANA SLIP GAJI</button>
+    <button class="btn-logout" id="btn-logout" onclick="logout()" style="display:none">Log Keluar</button>
+  </div>
+</aside>
+
+<main class="pv">
+  <div class="pv-bar">
+    <span class="pv-label">Pratonton Slip Gaji</span>
+    <button class="btn-print" id="btn-print" onclick="window.print()">🖨 Cetak / Simpan PDF</button>
+  </div>
+
+  <div class="empty" id="empty">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.2">
+      <rect x="4" y="2" width="16" height="20" rx="2"/>
+      <line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/>
+    </svg>
+    <div>
+      <p>Isi maklumat di sebelah, kemudian klik <strong>Jana Slip Gaji</strong></p>
+      <p style="margin-top:6px;font-size:11px;color:#aaa">Atau klik <strong>Cuba Contoh Data</strong> untuk tengok contoh slip</p>
+    </div>
+  </div>
+
+  <div class="slip-scroll-wrap" id="slip-scroll-wrap" style="display:none">
+  <div id="slip">
+
+    <div class="sl-logo-row">
+      <div class="sl-logo-left">
+        <div class="co-name-block">
+          <div class="co-name-main" id="ps-coname">NAMA SYARIKAT</div>
+          <div class="co-name-reg" id="ps-cossm"></div>
+          <div class="co-name-addr" id="ps-coaddr"></div>
+        </div>
+      </div>
+      <div class="sl-logo-right">
+        <div class="co-logo-text" id="ps-initials">SG</div>
+        <div class="co-logo-sub">SLIP GAJI</div>
+      </div>
+    </div>
+
+    <div class="sl-title-bar">PENYATA GAJI / PAYSLIP</div>
+
+    <div class="sl-wave">
+      <div class="sl-wave-label">
+        <span id="ps-unit">UNIT / CAWANGAN</span>
+        <span>BULAN : <span id="ps-bulan">—</span></span>
+      </div>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;padding:4px 14px;font-size:11px">
+      <tr>
+        <td style="padding:3px 6px 3px 14px;font-weight:700;white-space:nowrap;width:90px">Nama</td>
+        <td style="padding:3px 8px 3px 2px;border-bottom:1px dotted #999;width:240px" id="ps-name">—</td>
+        <td style="padding:3px 6px;font-weight:700;white-space:nowrap;width:80px">Jabatan</td>
+        <td style="padding:3px 8px;border-bottom:1px dotted #999" id="ps-jabatan">—</td>
+      </tr>
+      <tr>
+        <td style="padding:3px 6px 3px 14px;font-weight:700;white-space:nowrap">No. Gaji</td>
+        <td style="padding:3px 8px 3px 2px;border-bottom:1px dotted #999" id="ps-nogaji">—</td>
+        <td style="padding:3px 6px;font-weight:700;white-space:nowrap">Pusat Bayar</td>
+        <td style="padding:3px 8px;border-bottom:1px dotted #999" id="ps-pusat">—</td>
+      </tr>
+      <tr>
+        <td style="padding:3px 6px 4px 14px;font-weight:700;white-space:nowrap">No. K/P</td>
+        <td style="padding:3px 8px 4px 2px;border-bottom:1px dotted #999" id="ps-ic">—</td>
+        <td style="padding:3px 6px;font-weight:700;white-space:nowrap">No. KWSP</td>
+        <td style="padding:3px 8px;border-bottom:1px dotted #999" id="ps-epfno">—</td>
+      </tr>
+    </table>
+
+    <div class="sl-divider"></div>
+
+    <div class="sl-table-wrap">
+      <div class="sl-vline-1"></div>
+      <div class="sl-vline-2"></div>
+      <div class="sl-vline-3"></div>
+      <table class="sl-main-table" id="ps-main-table">
+        <colgroup>
+          <col style="width:38%">
+          <col style="width:12%">
+          <col style="width:38%">
+          <col style="width:12%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="th-earn">PENDAPATAN</th>
+            <th class="th-earn-amt">AMAUN (RM)</th>
+            <th class="th-ded">POTONGAN</th>
+            <th class="th-ded-amt">AMAUN (RM)</th>
+          </tr>
+        </thead>
+        <tbody id="ps-main-tbody">
+          <tr>
+            <td class="td-earn" style="height:140px"></td>
+            <td class="td-earn-amt"></td>
+            <td class="td-ded"></td>
+            <td class="td-ded-amt"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sl-foot-wave"></div>
+
+    <table class="sl-summary-table">
+      <tr>
+        <td class="sum-earn-label">Jumlah Pendapatan</td>
+        <td class="sum-earn-val" id="ps-jumlah-earn">0.00</td>
+        <td class="sum-ded-label">Jumlah Potongan</td>
+        <td class="sum-ded-val" id="ps-jumlah-ded">0.00</td>
+        <td colspan="2"></td>
+      </tr>
+      <tr class="sl-net-row">
+        <td colspan="2" class="net-label-cell">Gaji Bersih</td>
+        <td colspan="4" class="net-val-cell" id="ps-net">0.00</td>
+      </tr>
+    </table>
+
+    <div class="sl-bank-row">
+      <span>Bank &nbsp;: <strong id="ps-bank">—</strong></span>
+      <span>No Akaun : <strong id="ps-bankno">—</strong></span>
+      <span>(No Siri : <span id="ps-siri">—</span>)</span>
+    </div>
+
+    <div class="sl-notice">
+      <div>SILA SIMPAN UNTUK KEGUNAAN CUKAI PENDAPATAN</div>
+      <div>SILA MAKLUMKAN MAJIKAN JIKA MAKLUMAT SILAP</div>
+    </div>
+
+    <div class="sl-confidential">SULIT DAN PERSENDIRIAN</div>
+  </div>
+  </div>
+
+</main>
+</div>
+
+<div class="sb-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+<button class="mob-fab-gen" id="mob-fab-gen" onclick="generateSlip()">▶ Jana Slip</button>
+<button class="mob-fab" id="mob-fab" onclick="openSidebar()" title="Buka Form">✏️</button>
+
+<div class="modal-overlay" id="auth-modal">
+  <div class="auth-modal">
+    <div class="auth-modal-head">
+      <div class="auth-modal-icon">🔐</div>
+      <div class="auth-modal-title" id="auth-title">Log Masuk</div>
+      <div class="auth-modal-sub" id="auth-sub">Masuk untuk jana slip gaji pertama anda <strong style="color:#4ade80">PERCUMA</strong></div>
+    </div>
+    <div class="auth-modal-body">
+      <div class="auth-field">
+        <label>Alamat Emel</label>
+        <input type="email" id="auth-email" placeholder="nama@email.com" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <label>Kata Laluan</label>
+        <input type="password" id="auth-pass" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div class="auth-field" id="auth-name-field" style="display:none">
+        <label>Nama Pengguna</label>
+        <input type="text" id="auth-name" placeholder="Nama anda">
+      </div>
+      <div class="auth-msg" id="auth-msg"></div>
+      <button class="auth-btn-primary" id="auth-submit-btn" onclick="authSubmit()">Log Masuk</button>
+      <hr class="auth-divider">
+      <div class="auth-switch" id="auth-switch-text">
+        Belum ada akaun? <a onclick="switchAuthMode()">Daftar sekarang</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pay-modal">
+  <div class="pay-modal">
+    <div class="pay-modal-head">
+      <div class="pay-modal-icon">⚡</div>
+      <div class="pay-modal-title">Naik Taraf ke PRO</div>
+      <div class="pay-modal-sub">Anda telah menggunakan slip gaji percuma anda</div>
+    </div>
+    <div class="pay-modal-body">
+      <div class="pay-price-box">
+        <div class="pay-price"><sup>RM</sup>39.90</div>
+        <div class="pay-price-sub">sebulan • batalkan bila-bila masa</div>
+      </div>
+      <ul class="pay-features">
+        <li>Slip gaji tanpa had setiap bulan</li>
+        <li>Semua bank Malaysia disokong</li>
+        <li>Pengiraan KWSP, SOCSO, EIS, PCB automatik</li>
+        <li>Cetak & simpan PDF A4 landscape</li>
+        <li>Sokongan pelanggan melalui WhatsApp</li>
+        <li>Kemas kini percuma seumur hidup</li>
+      </ul>
+      <button class="pay-btn" onclick="redirectToPayment()">💳 Langgan Sekarang — RM39.90/bulan</button>
+      <button class="pay-dismiss" onclick="dismissPaywall()">Tidak, terima kasih</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PERKESO=[
+  [30,0.4,0.1,0.05,0.05],[50,0.7,0.2,0.1,0.1],[70,1.1,0.3,0.15,0.15],
+  [100,1.5,0.4,0.2,0.2],[140,2.1,0.6,0.25,0.25],[200,2.95,0.85,0.35,0.35],
+  [300,4.35,1.25,0.5,0.5],[400,6.15,1.75,0.7,0.7],[500,7.85,2.25,0.9,0.9],
+  [600,9.65,2.75,1.1,1.1],[700,11.35,3.25,1.3,1.3],[800,13.15,3.75,1.5,1.5],
+  [900,14.85,4.25,1.7,1.7],[1000,16.65,4.75,1.9,1.9],[1100,18.35,5.25,2.1,2.1],
+  [1200,20.15,5.75,2.3,2.3],[1300,21.85,6.25,2.5,2.5],[1400,23.65,6.75,2.7,2.7],
+  [1500,25.35,7.25,2.9,2.9],[1600,27.15,7.75,3.1,3.1],[1700,28.85,8.25,3.3,3.3],
+  [1800,30.65,8.75,3.5,3.5],[1900,32.35,9.25,3.7,3.7],[2000,34.15,9.75,3.9,3.9],
+  [2100,35.85,10.25,4.1,4.1],[2200,37.65,10.75,4.3,4.3],[2300,39.35,11.25,4.5,4.5],
+  [2400,41.15,11.75,4.7,4.7],[2500,42.85,12.25,4.9,4.9],[2600,44.65,12.75,5.1,5.1],
+  [2700,46.35,13.25,5.3,5.3],[2800,48.15,13.75,5.5,5.5],[2900,49.85,14.25,5.7,5.7],
+  [3000,51.65,14.75,5.9,5.9],[3100,53.35,15.25,6.1,6.1],[3200,55.15,15.75,6.3,6.3],
+  [3300,56.85,16.25,6.5,6.5],[3400,58.65,16.75,6.7,6.7],[3500,60.35,17.25,6.9,6.9],
+  [3600,62.15,17.75,7.1,7.1],[3700,63.85,18.25,7.3,7.3],[3800,65.65,18.75,7.5,7.5],
+  [3900,67.35,19.25,7.7,7.7],[4000,69.15,19.75,7.9,7.9],[4100,70.85,20.25,8.1,8.1],
+  [4200,72.65,20.75,8.3,8.3],[4300,74.35,21.25,8.5,8.5],[4400,76.15,21.75,8.7,8.7],
+  [4500,77.85,22.25,8.9,8.9],[4600,79.65,22.75,9.1,9.1],[4700,81.35,23.25,9.3,9.3],
+  [4800,83.15,23.75,9.5,9.5],[4900,84.85,24.25,9.7,9.7],[5000,86.65,24.75,9.9,9.9]
+];
+function perkeso(g){
+  if(g<=0)return[0,0,0,0];
+  for(let[c,se,ee,si,ei]of PERKESO)if(g<=c)return[se,ee,si,ei];
+  return[86.65,24.75,9.9,9.9];
+}
+function pcbAnn(y){
+  if(y<=5000)return 0;
+  if(y<=20000)return(y-5000)*.01;
+  if(y<=35000)return 150+(y-20000)*.03;
+  if(y<=50000)return 600+(y-35000)*.08;
+  if(y<=70000)return 1800+(y-50000)*.13;
+  if(y<=100000)return 4400+(y-70000)*.21;
+  if(y<=250000)return 10700+(y-100000)*.24;
+  if(y<=400000)return 46700+(y-250000)*.245;
+  if(y<=600000)return 83450+(y-400000)*.25;
+  return 133450+(y-600000)*.26;
+}
+
+function fmt(n){return(+n||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
+function gv(id){return parseFloat(document.getElementById(id).value)||0}
+function sv(id,v){const el=document.getElementById(id);if(el)el.textContent=v}
+function shtml(id,v){const el=document.getElementById(id);if(el)el.innerHTML=v}
+
+let elaunList=[], deductList=[];
+
+function addElaun(){elaunList.push({id:Date.now(),d:'',a:0});renderElaun()}
+function remElaun(id){elaunList=elaunList.filter(e=>e.id!==id);renderElaun();autoCalc()}
+function renderElaun(){
+  document.getElementById('elaun-list').innerHTML=elaunList.map(e=>`
+    <div class="dyn-row">
+      <input type="text" placeholder="Nama elaun/imbuhan" value="${e.d}"
+        oninput="elaunList.find(x=>x.id==${e.id}).d=this.value">
+      <input type="number" step="0.01" placeholder="0.00" value="${e.a||''}"
+        oninput="elaunList.find(x=>x.id==${e.id}).a=parseFloat(this.value)||0;autoCalc()">
+      <button class="btn-rm" onclick="remElaun(${e.id})">×</button>
+    </div>`).join('')
+}
+
+function addDeduct(){deductList.push({id:Date.now(),d:'',a:0});renderDeduct()}
+function remDeduct(id){deductList=deductList.filter(e=>e.id!==id);renderDeduct();autoCalc()}
+function renderDeduct(){
+  document.getElementById('deduct-list').innerHTML=deductList.map(e=>`
+    <div class="dyn-row">
+      <input type="text" placeholder="Nama potongan" value="${e.d}"
+        oninput="deductList.find(x=>x.id==${e.id}).d=this.value">
+      <input type="number" step="0.01" placeholder="0.00" value="${e.a||''}"
+        oninput="deductList.find(x=>x.id==${e.id}).a=parseFloat(this.value)||0;autoCalc()">
+      <button class="btn-rm" onclick="remDeduct(${e.id})">×</button>
+    </div>`).join('')
+}
+<script>
+const EPF_TBL=[
+  [10,0,0],[20,3,3],[40,5,6],[60,7,8],[80,9,11],[100,11,13],
+  [120,14,16],[140,16,19],[160,18,21],[180,20,24],[200,22,26],
+  [220,25,29],[240,27,32],[260,29,34],[280,31,37],[300,33,39],
+  [320,36,42],[340,38,45],[360,40,47],[380,42,50],[400,44,52],
+  [420,47,55],[440,49,58],[460,51,60],[480,53,63],[500,55,65],
+  [520,58,68],[540,60,71],[560,62,73],[580,64,76],[600,66,78],
+  [620,69,81],[640,71,84],[660,73,86],[680,75,89],[700,77,91],
+  [720,80,94],[740,82,97],[760,84,99],[780,86,102],[800,88,104],
+  [820,91,107],[840,93,110],[860,95,112],[880,97,115],[900,99,117],
+  [920,102,120],[940,104,123],[960,106,125],[980,108,128],[1000,110,130],
+  [1020,113,133],[1040,115,136],[1060,117,138],[1080,119,141],[1100,121,143],
+  [1120,124,146],[1140,126,149],[1160,128,151],[1180,130,154],[1200,132,156],
+  [1220,135,159],[1240,137,162],[1260,139,164],[1280,141,167],[1300,143,169],
+  [1320,146,172],[1340,148,175],[1360,150,177],[1380,152,180],[1400,154,182],
+  [1420,157,185],[1440,159,188],[1460,161,190],[1480,163,193],[1500,165,195],
+  [1520,168,198],[1540,170,201],[1560,172,203],[1580,174,206],[1600,176,208],
+  [1620,179,211],[1640,181,214],[1660,183,216],[1680,185,219],[1700,187,221],
+  [1720,190,224],[1740,192,227],[1760,194,229],[1780,196,232],[1800,198,234],
+  [1820,201,237],[1840,203,240],[1860,205,242],[1880,207,245],[1900,209,247],
+  [1920,212,250],[1940,214,253],[1960,216,255],[1980,218,258],[2000,220,260],
+  [2020,223,263],[2040,225,266],[2060,227,268],[2080,229,271],[2100,231,273],
+  [2120,234,276],[2140,236,279],[2160,238,281],[2180,240,284],[2200,242,286],
+  [2220,245,289],[2240,247,292],[2260,249,294],[2280,251,297],[2300,253,299],
+  [2320,256,302],[2340,258,305],[2360,260,307],[2380,262,310],[2400,264,312],
+  [2420,267,315],[2440,269,318],[2460,271,320],[2480,273,323],[2500,275,325],
+  [2520,278,328],[2540,280,331],[2560,282,333],[2580,284,336],[2600,286,338],
+  [2620,289,341],[2640,291,344],[2660,293,346],[2680,295,349],[2700,297,351],
+  [2720,300,354],[2740,302,357],[2760,304,359],[2780,306,362],[2800,308,364],
+  [2820,311,367],[2840,313,370],[2860,315,372],[2880,317,375],[2900,319,377],
+  [2920,322,380],[2940,324,383],[2960,326,385],[2980,328,388],[3000,330,390],
+  [3020,333,393],[3040,335,396],[3060,337,398],[3080,339,401],[3100,341,403],
+  [3120,344,406],[3140,346,409],[3160,348,411],[3180,350,414],[3200,352,416],
+  [3220,355,419],[3240,357,422],[3260,359,424],[3280,361,427],[3300,363,429],
+  [3320,366,432],[3340,368,435],[3360,370,437],[3380,372,440],[3400,374,442],
+  [3420,377,445],[3440,379,448],[3460,381,450],[3480,383,453],[3500,385,455],
+  [3520,388,458],[3540,390,461],[3560,392,463],[3580,394,466],[3600,396,468],
+  [3620,399,471],[3640,401,474],[3660,403,476],[3680,405,479],[3700,407,481],
+  [3720,410,484],[3740,412,487],[3760,414,489],[3780,416,492],[3800,418,494],
+  [3820,421,497],[3840,423,500],[3860,425,502],[3880,427,505],[3900,429,507],
+  [3920,432,510],[3940,434,513],[3960,436,515],[3980,438,518],[4000,440,520],
+  [4020,443,523],[4040,445,526],[4060,447,528],[4080,449,531],[4100,451,533],
+  [4120,454,536],[4140,456,539],[4160,458,541],[4180,460,544],[4200,462,546],
+  [4220,465,549],[4240,467,552],[4260,469,554],[4280,471,557],[4300,473,559],
+  [4320,476,562],[4340,478,565],[4360,480,567],[4380,482,570],[4400,484,572],
+  [4420,487,575],[4440,489,578],[4460,491,580],[4480,493,583],[4500,495,585],
+  [4520,498,588],[4540,500,591],[4560,502,593],[4580,504,596],[4600,506,598],
+  [4620,509,601],[4640,511,604],[4660,513,606],[4680,515,609],[4700,517,611],
+  [4720,520,614],[4740,522,617],[4760,524,619],[4780,526,622],[4800,528,624],
+  [4820,531,627],[4840,533,630],[4860,535,632],[4880,537,635],[4900,539,637],
+  [4920,542,640],[4940,544,643],[4960,546,645],[4980,548,648],[5000,550,650]
+];
+function lookupEPF(gross){
+  if(gross<=0)return[0,0];
+  for(let[c,ee,er]of EPF_TBL)if(gross<=c)return[ee,er];
+  return[Math.round(gross*0.11),Math.round(gross*0.12)];
+}
+
+let epfManual=false;
+function toggleEPF(){
+  epfManual=!epfManual;
+  const track=document.getElementById('epf-toggle-track');
+  const lbl=document.getElementById('epf-mode-label');
+  const autoDiv=document.getElementById('epf-auto-display');
+  const manDiv=document.getElementById('epf-manual-inputs');
+  if(epfManual){
+    track.classList.add('on');
+    lbl.style.color='rgba(96,165,250,.9)';
+    autoDiv.style.display='none';
+    manDiv.style.display='grid';
+  } else {
+    track.classList.remove('on');
+    lbl.style.color='rgba(255,255,255,.4)';
+    autoDiv.style.display='grid';
+    manDiv.style.display='none';
+    document.getElementById('f-epf-ee').value='';
+    document.getElementById('f-epf-er').value='';
+  }
+  reverseCalc();
+}
+
+function calcFromGross(gross){
+  const [epfEe,epfEr]=lookupEPF(gross);
+  const [socsoEr,socsoEe,eisEr,eisEe]=perkeso(gross);
+  const adv=gv('f-adv');
+  const extraD=deductList.reduce((s,e)=>s+e.a,0);
+  const chargeable=gross-epfEe-socsoEe-eisEe;
+  const pcb=Math.max(0,Math.round(pcbAnn(chargeable*12)/12*100)/100);
+  const totalDed=epfEe+socsoEe+eisEe+pcb+adv+extraD;
+  const net=Math.round((gross-totalDed)*100)/100;
+  return{gross,epfEe,epfEr,socsoEe,socsoEr,eisEe,eisEr,pcb,totalDed,net,chargeable};
+}
+
+function calcFromGrossManualEPF(gross, manEpfEe, manEpfEr){
+  const [socsoEr,socsoEe,eisEr,eisEe]=perkeso(gross);
+  const adv=gv('f-adv');
+  const extraD=deductList.reduce((s,e)=>s+e.a,0);
+  const chargeable=gross-manEpfEe-socsoEe-eisEe;
+  const pcb=Math.max(0,Math.round(pcbAnn(chargeable*12)/12*100)/100);
+  const totalDed=manEpfEe+socsoEe+eisEe+pcb+adv+extraD;
+  const net=Math.round((gross-totalDed)*100)/100;
+  return{gross,epfEe:manEpfEe,epfEr:manEpfEr,socsoEe,socsoEr,eisEe,eisEr,pcb,totalDed,net};
+}
+
+let lastCalc=null;
+
+function reverseCalc(){
+  const netTarget=parseFloat(document.getElementById('f-net').value)||0;
+  const elaun=elaunList.reduce((s,e)=>s+e.a,0);
+
+  if(netTarget<=0){
+    document.getElementById('calc-result-box').style.display='none';
+    lastCalc=null;
+    return;
+  }
+
+  let result;
+
+  if(epfManual){
+    const manEpfEe=gv('f-epf-ee');
+    const manEpfEr=gv('f-epf-er');
+    let lo=netTarget*0.8, hi=netTarget*3;
+    for(let i=0;i<150;i++){
+      const mid=(lo+hi)/2;
+      const r=calcFromGrossManualEPF(mid+elaun, manEpfEe, manEpfEr);
+      if(r.net<netTarget) lo=mid; else hi=mid;
+    }
+    const grossBase=(lo+hi)/2;
+    result=calcFromGrossManualEPF(grossBase+elaun, manEpfEe, manEpfEr);
+    result.grossBase=grossBase;
+  } else {
+    let lo=netTarget*0.8, hi=netTarget*3;
+    for(let i=0;i<150;i++){
+      const mid=(lo+hi)/2;
+      const r=calcFromGross(mid+elaun);
+      if(r.net<netTarget) lo=mid; else hi=mid;
+    }
+    const grossBase=(lo+hi)/2;
+    result=calcFromGross(grossBase+elaun);
+    result.grossBase=grossBase;
+  }
+
+  lastCalc=result;
+
+  document.getElementById('calc-result-box').style.display='block';
+  document.getElementById('r-gross').textContent='RM '+fmt(result.gross);
+  document.getElementById('r-epf-ee').textContent='RM '+fmt(result.epfEe);
+  document.getElementById('r-epf-er').textContent='RM '+fmt(result.epfEr);
+  document.getElementById('r-socso').textContent='RM '+fmt(result.socsoEe);
+  document.getElementById('r-eis').textContent='RM '+fmt(result.eisEe);
+  document.getElementById('r-pcb').textContent='RM '+fmt(result.pcb);
+  document.getElementById('r-net').textContent='RM '+fmt(result.net);
+
+  document.getElementById('epf-auto-ee').textContent='RM '+fmt(result.epfEe);
+  document.getElementById('epf-auto-er').textContent='RM '+fmt(result.epfEr);
+}
+<script>
+const BBULAN=['JANUARI','FEBRUARI','MAC','APRIL','MEI','JUN','JULAI','OGOS','SEPTEMBER','OKTOBER','NOVEMBER','DISEMBER'];
+
+function generateSlip(){
+  if(!lastCalc){
+    alert('Sila masukkan gaji bersih dahulu!');
+    return;
+  }
+  const r=lastCalc;
+  const elaun=elaunList.reduce((s,e)=>s+e.a,0);
+  const grossBase=r.grossBase||0;
+  const gross=r.gross;
+  const adv=gv('f-adv');
+  const extraD=deductList.reduce((s,e)=>s+e.a,0);
+  const netTarget=parseFloat(document.getElementById('f-net').value)||0;
+
+  const mv=document.getElementById('f-month').value;
+  let bulanStr='—';
+  if(mv){const d=new Date(mv+'-01');bulanStr=BBULAN[d.getMonth()]+'/'+d.getFullYear()}
+
+  const siri=Math.floor(Math.random()*90000+10000);
+
+  const coname=(document.getElementById('f-coname').value||'SG').trim();
+  const initials=coname.split(/\s+/).map(w=>w[0]||'').join('').substring(0,3).toUpperCase()||'SG';
+
+  sv('ps-coname', coname.toUpperCase());
+  sv('ps-cossm',  document.getElementById('f-cossm').value||'');
+  sv('ps-coaddr', document.getElementById('f-coaddr').value||'');
+  sv('ps-initials', initials);
+  sv('ps-unit',   (document.getElementById('f-pusat').value||coname).toUpperCase());
+  sv('ps-bulan',  bulanStr);
+  sv('ps-name',   document.getElementById('f-name').value||'—');
+  sv('ps-jabatan',document.getElementById('f-jabatan').value||'—');
+  sv('ps-nogaji', document.getElementById('f-nogaji').value||'—');
+  sv('ps-pusat',  document.getElementById('f-pusat').value||'—');
+  sv('ps-ic',     document.getElementById('f-ic').value||'—');
+  sv('ps-epfno',  document.getElementById('f-epfno').value||'—');
+  sv('ps-bank',   document.getElementById('f-bank').value||'—');
+  sv('ps-bankno', document.getElementById('f-bankno').value||'—');
+  sv('ps-siri',   siri);
+
+  const earnRows=[];
+  earnRows.push({l:'Gaji Pokok', a:grossBase, neg:false});
+  elaunList.forEach(e=>{if(e.d||e.a)earnRows.push({l:e.d||'Elaun',a:e.a,neg:false})});
+
+  const dedRows=[];
+  if(r.epfEe>0)   dedRows.push({l:'Caruman KWSP (Pekerja)',   a:r.epfEe});
+  if(r.socsoEe>0) dedRows.push({l:'Caruman SOCSO (Pekerja)',  a:r.socsoEe});
+  if(r.eisEe>0)   dedRows.push({l:'Caruman EIS (Pekerja)',    a:r.eisEe});
+  if(r.pcb>0)     dedRows.push({l:'Potongan Cukai Bulanan (PCB)', a:r.pcb});
+  if(adv>0)       dedRows.push({l:'Pendahuluan Gaji',          a:adv});
+  deductList.forEach(e=>{if(e.d||e.a)dedRows.push({l:e.d||'Potongan',a:e.a})});
+
+  const maxRows=Math.max(earnRows.length, dedRows.length, 6);
+  let tbodyHTML='';
+  for(let i=0;i<maxRows;i++){
+    const e=earnRows[i]||{l:'',a:null};
+    const d=dedRows[i]||{l:'',a:null};
+    const earnAmt = e.a!==null ? (e.neg?`<span style="color:#CC0001">(${fmt(e.a)})</span>`:fmt(e.a)) : '';
+    const dedAmt  = d.a!==null ? fmt(d.a) : '';
+    tbodyHTML+=`<tr>
+      <td class="td-earn">${e.l}</td>
+      <td class="td-earn-amt">${earnAmt}</td>
+      <td class="td-ded">${d.l}</td>
+      <td class="td-ded-amt">${dedAmt}</td>
+    </tr>`;
+  }
+  document.getElementById('ps-main-tbody').innerHTML=tbodyHTML;
+
+  sv('ps-jumlah-earn', fmt(gross));
+  sv('ps-jumlah-ded',  fmt(r.totalDed));
+  sv('ps-net',         fmt(netTarget));
+
+  document.getElementById('slip').style.display='block';
+  document.getElementById('slip-scroll-wrap').style.display='block';
+  document.getElementById('empty').style.display='none';
+  document.getElementById('btn-print').style.display='flex';
+  document.getElementById('slip-scroll-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function loadExample(){
+  document.getElementById('f-coname').value='SYARIKAT MAJU JAYA SDN BHD';
+  document.getElementById('f-cossm').value='202001012345 (1234567-X)';
+  document.getElementById('f-coaddr').value='No. 12, Jalan Teknologi 3, Taman Sains Selangor, 40150 Shah Alam, Selangor';
+  document.getElementById('f-name').value='AHMAD BIN ABU (CONTOH)';
+  document.getElementById('f-nogaji').value='P0023';
+  document.getElementById('f-ic').value='XXXXXX-XX-XXXX';
+  document.getElementById('f-jabatan').value='0211 Jabatan Pentadbiran';
+  document.getElementById('f-pusat').value='HQ Shah Alam';
+  document.getElementById('f-epfno').value='XXXXXXXX';
+  const now=new Date();
+  document.getElementById('f-month').value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  document.getElementById('f-bank').value='MBBEMYKL';
+  document.getElementById('f-bankno').value='XXXX-XXXX-XXXX';
+
+  document.getElementById('f-net').value='5505.33';
+
+  elaunList=[
+    {id:1,d:'Imbuhan Tetap Perumahan',a:400},
+    {id:2,d:'Imbuhan Tetap Keraian',a:400},
+    {id:3,d:'Bantuan Sara Hidup',a:150}
+  ];
+  renderElaun();
+
+  deductList=[
+    {id:10,d:'YPEIM-Pbgn Eko Islam Msia',a:5},
+    {id:11,d:'Sumbangan KWAPM',a:1},
+    {id:12,d:'Angkasa',a:412}
+  ];
+  renderDeduct();
+
+  document.getElementById('f-adv').value='0';
+
+  if(epfManual) toggleEPF();
+
+  reverseCalc();
+  generateSlip();
+}
+
+function resetForm(){
+  const ids=['f-coname','f-cossm','f-coaddr','f-name','f-nogaji','f-ic',
+             'f-jabatan','f-pusat','f-epfno','f-bank','f-bankno',
+             'f-net','f-epf-ee','f-epf-er','f-adv'];
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  document.getElementById('f-adv').value='0';
+  elaunList=[];deductList=[];
+  renderElaun();renderDeduct();
+  if(epfManual)toggleEPF();
+  lastCalc=null;
+  document.getElementById('calc-result-box').style.display='none';
+  document.getElementById('slip').style.display='none';
+  document.getElementById('slip-scroll-wrap').style.display='none';
+  document.getElementById('empty').style.display='flex';
+  document.getElementById('btn-print').style.display='none';
+  const now=new Date();
+  document.getElementById('f-month').value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+}
+<script>
+const BANK_DATA={
+  'MBBEMYKL':  {name:'Maybank Berhad',            swift:'MBBEMYKL'},
+  'CIMBMYKL':  {name:'CIMB Bank Berhad',           swift:'CIMBMYKL'},
+  'HLBBMYKL':  {name:'Hong Leong Bank Berhad',     swift:'HLBBMYKL'},
+  'RHBBMYKL':  {name:'RHB Bank Berhad',            swift:'RHBBMYKL'},
+  'AFBQMYKL':  {name:'Affin Bank Berhad',          swift:'AFBQMYKL'},
+  'AMMBMYKL':  {name:'AmBank (M) Berhad',          swift:'AMMBMYKL'},
+  'BIMBMYKL':  {name:'Bank Islam Malaysia Berhad', swift:'BIMBMYKL'},
+  'BKRMMYKL':  {name:'Bank Kerjasama Rakyat Malaysia',swift:'BKRMMYKL'},
+  'BMMBMYKL':  {name:'Bank Muamalat Malaysia Berhad',swift:'BMMBMYKL'},
+  'BSNAMYK1':  {name:'Bank Simpanan Nasional',     swift:'BSNAMYK1'},
+  'OCBCMYKL':  {name:'OCBC Bank (Malaysia) Berhad',swift:'OCBCMYKL'},
+  'PBBEMYKL':  {name:'Public Bank Berhad',         swift:'PBBEMYKL'},
+  'UOVBMYKL':  {name:'United Overseas Bank (M)',   swift:'UOVBMYKL'},
+  'AGOBMYKL':  {name:'Agrobank',                   swift:'AGOBMYKL'},
+  'BNPPMYKL':  {name:'Bank Pembangunan Malaysia',  swift:'BNPPMYKL'},
+  'EXABMYKL':  {name:'Export-Import Bank of Malaysia',swift:'EXABMYKL'},
+  'ALSRMYK1':  {name:'Al-Rajhi Banking & Investment Corp',swift:'ALSRMYK1'},
+  'AISLMYKL':  {name:'AEON Credit Service (M)',    swift:'AISLMYKL'},
+  'HBMBMYKL':  {name:'HSBC Bank Malaysia Berhad', swift:'HBMBMYKL'},
+  'SCBLMYKX':  {name:'Standard Chartered Bank Malaysia',swift:'SCBLMYKX'},
+  'CITIMYKL':  {name:'Citibank Berhad',            swift:'CITIMYKL'},
+  'DEUTMYKL':  {name:'Deutsche Bank (Malaysia)',   swift:'DEUTMYKL'},
+  'BNPAMYKL':  {name:'BNP Paribas Malaysia Berhad',swift:'BNPAMYKL'},
+  'MFBBMYKL':  {name:'MBSB Bank Berhad',           swift:'MFBBMYKL'},
+  'KFHOMYKL':  {name:'Kuwait Finance House Malaysia',swift:'KFHOMYKL'},
+  'GXBank':    {name:'GX Bank Berhad',             swift:'GXBank'},
+  'Boost Bank':{name:'Boost Bank Berhad',          swift:'Boost Bank'},
+  'RIZE':      {name:'RIZE by Standard Chartered', swift:'RIZE'},
+};
+
+document.getElementById('f-bank').addEventListener('change', function(){
+  const val=this.value;
+  const hint=document.getElementById('bank-swift-hint');
+  if(val && BANK_DATA[val]){
+    document.getElementById('bank-swift-code').textContent=BANK_DATA[val].swift;
+    document.getElementById('bank-full-name').textContent=BANK_DATA[val].name;
+    hint.style.display='block';
+  } else {
+    hint.style.display='none';
+  }
+  gen();
+});
+
+renderElaun();renderDeduct();
+const now=new Date();
+document.getElementById('f-month').value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+function gen(){}
+
+function openSidebar(){
+  document.getElementById('sidebar').classList.add('sb-open');
+  document.getElementById('sb-overlay').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('sb-open');
+  document.getElementById('sb-overlay').classList.remove('active');
+  document.body.style.overflow='';
+}
+
+const _origGen=generateSlip;
+generateSlip=function(){
+  _origGen();
+  if(window.innerWidth<=767)closeSidebar();
+};
+
+function checkMobile(){
+  const mob=window.innerWidth<=767;
+  document.getElementById('mob-fab').style.display=mob?'flex':'none';
+  document.getElementById('mob-fab-gen').style.display=mob?'flex':'none';
+}
+checkMobile();
+window.addEventListener('resize',checkMobile);
+</script>
+
+<script>
+const SUPABASE_URL  = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY  = 'YOUR_SUPABASE_ANON_KEY';
+const TOYYIBPAY_URL = 'https://toyyibpay.com/index.php/api/createBill';
+const TOYYIBPAY_CAT = 'YOUR_CATEGORY_CODE';
+const TOYYIBPAY_KEY = 'YOUR_USER_SECRET_KEY';
+const APP_URL       = 'https://yourusername.github.io/mudah-slip-gaji';
+
+let currentUser = null;
+let userPlan = 'free';
+let slipCount = 0;
+const FREE_LIMIT = 1;
+
+async function sbFetch(path, opts={}) {
+  const res = await fetch(SUPABASE_URL + path, {
+    ...opts,
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + (currentUser?.access_token || SUPABASE_KEY),
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || '',
+      ...(opts.headers || {})
+    }
+  });
+  return res;
+}
+
+let authMode = 'login';
+
+function showAuthModal() {
+  document.getElementById('auth-modal').classList.add('show');
+  document.getElementById('auth-email').focus();
+}
+function hideAuthModal() {
+  document.getElementById('auth-modal').classList.remove('show');
+  document.getElementById('auth-msg').textContent = '';
+}
+
+function switchAuthMode() {
+  authMode = authMode === 'login' ? 'register' : 'login';
+  const isReg = authMode === 'register';
+  document.getElementById('auth-title').textContent = isReg ? 'Daftar Akaun' : 'Log Masuk';
+  document.getElementById('auth-sub').innerHTML = isReg
+    ? 'Cipta akaun untuk mulakan slip gaji <strong style="color:#4ade80">PERCUMA</strong>'
+    : 'Masuk untuk jana slip gaji pertama anda <strong style="color:#4ade80">PERCUMA</strong>';
+  document.getElementById('auth-name-field').style.display = isReg ? 'block' : 'none';
+  document.getElementById('auth-submit-btn').textContent = isReg ? 'Daftar Sekarang' : 'Log Masuk';
+  document.getElementById('auth-switch-text').innerHTML = isReg
+    ? 'Sudah ada akaun? <a onclick="switchAuthMode()">Log masuk</a>'
+    : 'Belum ada akaun? <a onclick="switchAuthMode()">Daftar sekarang</a>';
+  document.getElementById('auth-msg').textContent = '';
+}
+
+function setAuthMsg(msg, type='err') {
+  const el = document.getElementById('auth-msg');
+  el.textContent = msg;
+  el.className = 'auth-msg ' + type;
+}
+
+async function authSubmit() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass  = document.getElementById('auth-pass').value;
+  const btn   = document.getElementById('auth-submit-btn');
+
+  if (!email || !pass) { setAuthMsg('Sila isi emel dan kata laluan.'); return; }
+  if (pass.length < 6) { setAuthMsg('Kata laluan sekurang-kurangnya 6 aksara.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Memproses...';
+
+  try {
+    const endpoint = authMode === 'login'
+      ? '/auth/v1/token?grant_type=password'
+      : '/auth/v1/signup';
+
+    const body = authMode === 'login'
+      ? { email, password: pass }
+      : { email, password: pass, data: { name: document.getElementById('auth-name').value } };
+
+    const res = await fetch(SUPABASE_URL + endpoint, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+
+    if (data.error || data.error_description) {
+      const msg = data.error_description || data.error?.message || 'Ralat. Cuba semula.';
+      setAuthMsg(msg === 'Invalid login credentials' ? 'Emel atau kata laluan salah.' : msg);
+      btn.disabled = false;
+      btn.textContent = authMode === 'login' ? 'Log Masuk' : 'Daftar Sekarang';
+      return;
+    }
+
+    if (authMode === 'register') {
+      setAuthMsg('✓ Akaun dicipta! Sila semak emel untuk pengesahan.', 'ok');
+      setTimeout(() => switchAuthMode(), 2000);
+      btn.disabled = false;
+      btn.textContent = 'Daftar Sekarang';
+      return;
+    }
+
+    currentUser = data;
+    localStorage.setItem('msg_user', JSON.stringify({ email, access_token: data.access_token, expires_at: data.expires_at }));
+    hideAuthModal();
+    await loadUserPlan();
+    updateUI();
+
+  } catch(e) {
+    setAuthMsg('Tiada sambungan. Cuba semula.');
+    btn.disabled = false;
+    btn.textContent = authMode === 'login' ? 'Log Masuk' : 'Daftar Sekarang';
+  }
+}
+
+['auth-email','auth-pass','auth-name'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') authSubmit(); });
+});
+
+async function loadUserPlan() {
+  if (!currentUser) return;
+  try {
+    const res = await sbFetch(`/rest/v1/subscriptions?email=eq.${encodeURIComponent(currentUser.email)}&select=plan,expires_at`, {
+      method: 'GET',
+      prefer: 'return=representation'
+    });
+    const rows = await res.json();
+    if (rows && rows.length > 0) {
+      const sub = rows[0];
+      const active = sub.plan === 'pro' && new Date(sub.expires_at) > new Date();
+      userPlan = active ? 'pro' : 'free';
+    } else {
+      userPlan = 'free';
+    }
+  } catch(e) {
+    userPlan = 'free';
+  }
+}
+
+function showPaywall() {
+  document.getElementById('pay-modal').classList.add('show');
+}
+function dismissPaywall() {
+  document.getElementById('pay-modal').classList.remove('show');
+}
+
+async function redirectToPayment() {
+  if (!currentUser) { showAuthModal(); return; }
+
+  try {
+    const formData = new URLSearchParams({
+      userSecretKey: TOYYIBPAY_KEY,
+      categoryCode: TOYYIBPAY_CAT,
+      billName: 'MUDAH SLIP GAJI PRO',
+      billDescription: 'Langganan bulanan RM39.90',
+      billPriceSetting: 1,
+      billPayorInfo: 1,
+      billAmount: 3990,
+      billReturnUrl: APP_URL + '?payment=success',
+      billCallbackUrl: APP_URL + '/callback',
+      billExternalReferenceNo: currentUser.email + '_' + Date.now(),
+      billTo: currentUser.email,
+      billEmail: currentUser.email,
+      billPhone: '',
+      billSplitPayment: 0,
+      billSplitPaymentArgs: '',
+      billPaymentChannel: 0,
+      billContentEmail: 'Terima kasih kerana melanggan MUDAH SLIP GAJI PRO!',
+      billChargeToCustomer: 1
+    });
+
+    const res = await fetch(TOYYIBPAY_URL, { method: 'POST', body: formData });
+    const bills = await res.json();
+    if (bills && bills[0]?.BillCode) {
+      window.location.href = 'https://toyyibpay.com/' + bills[0].BillCode;
+    } else {
+      alert('Ralat mencipta bil. Cuba semula atau hubungi kami.');
+    }
+  } catch(e) {
+    window.open('https://toyyibpay.com', '_blank');
+  }
+}
+
+function updateUI() {
+  const isPro = userPlan === 'pro';
+  const isLoggedIn = !!currentUser;
+
+  const badge = document.getElementById('plan-badge');
+  if (badge) {
+    badge.className = isPro ? 'pro-badge' : 'free-badge';
+    badge.textContent = isPro ? '⚡ PRO' : '✦ FREE';
+  }
+
+  const banner = document.getElementById('pro-banner');
+  if (banner) banner.style.display = isPro ? 'block' : 'none';
+
+  const logoutBtn = document.getElementById('btn-logout');
+  if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
+
+  updateUsageBar();
+
+  const authBtn = document.getElementById('btn-auth');
+  if (authBtn) {
+    authBtn.textContent = isLoggedIn ? '👤 ' + (currentUser.email.split('@')[0]) : '🔐 Log Masuk / Daftar';
+    authBtn.style.background = isLoggedIn ? 'rgba(74,222,128,.1)' : 'rgba(255,255,255,.06)';
+    authBtn.style.borderColor = isLoggedIn ? 'rgba(74,222,128,.2)' : 'rgba(255,255,255,.1)';
+    authBtn.style.color = isLoggedIn ? '#4ade80' : 'rgba(255,255,255,.6)';
+  }
+}
+
+function updateUsageBar() {
+  const isPro = userPlan === 'pro';
+  const fill = document.getElementById('usage-fill');
+  const countEl = document.getElementById('usage-count');
+  if (!fill || !countEl) return;
+  if (isPro) {
+    fill.style.width = '100%';
+    fill.className = 'usage-fill';
+    countEl.textContent = '∞ slip (PRO)';
+  } else {
+    const used = Math.min(slipCount, FREE_LIMIT);
+    const pct = (used / FREE_LIMIT) * 100;
+    fill.style.width = pct + '%';
+    fill.className = 'usage-fill' + (used >= FREE_LIMIT ? ' used' : '');
+    countEl.textContent = used + '/' + FREE_LIMIT + ' slip percuma';
+  }
+}
+
+const _origGenerateSlip = generateSlip;
+generateSlip = function() {
+  if (!currentUser) {
+    showAuthModal();
+    return;
+  }
+  if (userPlan !== 'pro' && slipCount >= FREE_LIMIT) {
+    showPaywall();
+    return;
+  }
+  _origGenerateSlip();
+  slipCount++;
+  updateUsageBar();
+};
+
+function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'success') {
+    userPlan = 'pro';
+    updateUI();
+    dismissPaywall();
+    const banner = document.getElementById('pro-banner');
+    if (banner) {
+      banner.style.display = 'block';
+      banner.textContent = '🎉 Pembayaran berjaya! Akaun PRO anda kini aktif. Selamat menggunakan MUDAH SLIP GAJI!';
+    }
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
+
+function logout() {
+  currentUser = null;
+  userPlan = 'free';
+  slipCount = 0;
+  localStorage.removeItem('msg_user');
+  updateUI();
+}
+
+async function autoLogin() {
+  try {
+    const saved = localStorage.getItem('msg_user');
+    if (saved) {
+      const u = JSON.parse(saved);
+      if (u.expires_at && new Date(u.expires_at * 1000) > new Date()) {
+        currentUser = u;
+        await loadUserPlan();
+      } else {
+        localStorage.removeItem('msg_user');
+      }
+    }
+  } catch(e) {}
+  updateUI();
+  checkPaymentReturn();
+}
+
+autoLogin();
+</script>
+</body>
+</html>
