@@ -675,31 +675,30 @@ function shtml(id,v){const el=document.getElementById(id);if(el)el.innerHTML=v}
 let elaunList=[], deductList=[];
 
 function addElaun(){elaunList.push({id:Date.now(),d:'',a:0});renderElaun()}
-function remElaun(id){elaunList=elaunList.filter(e=>e.id!==id);renderElaun();autoCalc()}
+function remElaun(id){elaunList=elaunList.filter(e=>e.id!==id);renderElaun();reverseCalc()}
 function renderElaun(){
   document.getElementById('elaun-list').innerHTML=elaunList.map(e=>`
     <div class="dyn-row">
       <input type="text" placeholder="Nama elaun/imbuhan" value="${e.d}"
         oninput="elaunList.find(x=>x.id==${e.id}).d=this.value">
       <input type="number" step="0.01" placeholder="0.00" value="${e.a||''}"
-        oninput="elaunList.find(x=>x.id==${e.id}).a=parseFloat(this.value)||0;autoCalc()">
+        oninput="elaunList.find(x=>x.id==${e.id}).a=parseFloat(this.value)||0;reverseCalc()">
       <button class="btn-rm" onclick="remElaun(${e.id})">×</button>
     </div>`).join('')
 }
 
 function addDeduct(){deductList.push({id:Date.now(),d:'',a:0});renderDeduct()}
-function remDeduct(id){deductList=deductList.filter(e=>e.id!==id);renderDeduct();autoCalc()}
+function remDeduct(id){deductList=deductList.filter(e=>e.id!==id);renderDeduct();reverseCalc()}
 function renderDeduct(){
   document.getElementById('deduct-list').innerHTML=deductList.map(e=>`
     <div class="dyn-row">
       <input type="text" placeholder="Nama potongan" value="${e.d}"
         oninput="deductList.find(x=>x.id==${e.id}).d=this.value">
       <input type="number" step="0.01" placeholder="0.00" value="${e.a||''}"
-        oninput="deductList.find(x=>x.id==${e.id}).a=parseFloat(this.value)||0;autoCalc()">
+        oninput="deductList.find(x=>x.id==${e.id}).a=parseFloat(this.value)||0;reverseCalc()">
       <button class="btn-rm" onclick="remDeduct(${e.id})">×</button>
     </div>`).join('')
 }
-<script>
 const EPF_TBL=[
   [10,0,0],[20,3,3],[40,5,6],[60,7,8],[80,9,11],[100,11,13],
   [120,14,16],[140,16,19],[160,18,21],[180,20,24],[200,22,26],
@@ -856,7 +855,6 @@ function reverseCalc(){
   document.getElementById('epf-auto-ee').textContent='RM '+fmt(result.epfEe);
   document.getElementById('epf-auto-er').textContent='RM '+fmt(result.epfEr);
 }
-<script>
 const BBULAN=['JANUARI','FEBRUARI','MAC','APRIL','MEI','JUN','JULAI','OGOS','SEPTEMBER','OKTOBER','NOVEMBER','DISEMBER'];
 
 function generateSlip(){
@@ -993,7 +991,6 @@ function resetForm(){
   const now=new Date();
   document.getElementById('f-month').value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
 }
-<script>
 const BANK_DATA={
   'MBBEMYKL':  {name:'Maybank Berhad',            swift:'MBBEMYKL'},
   'CIMBMYKL':  {name:'CIMB Bank Berhad',           swift:'CIMBMYKL'},
